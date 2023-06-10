@@ -22,7 +22,7 @@ namespace QR_Kod_Oluşturma
         {
             if (textBox1.Text == "")
             {
-                MessageBox.Show("QR kod oluşturabilmek için lütfen önce URL adresi, E-posta adresi, Telefon numarası giriniz.", "UYARI", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("QR kodu oluşturabilmek için lütfen önce URL adresi, E-posta adresi, Telefon numarası giriniz.", "UYARI", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
             else
@@ -33,43 +33,49 @@ namespace QR_Kod_Oluşturma
 
         }
 
-        private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
-        {
-
-        }
-
-        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
-        {
-
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
-            //SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-            //saveFileDialog1.Filter = "JPeg Dosyası|*.jpg|PNG Dosyası|*.png|";
-            //saveFileDialog1.Title = "QR Kod Kaydet";
-            //saveFileDialog1.ShowDialog();
+            //Resmi kaydetme işlemi
+            PictureBox picture = new PictureBox();
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
 
-            if (saveFileDialog1.FileName != "")
+            saveFileDialog.Filter = "JPG Dosyası | *.jpg | PNG Dosyası | *.png";
+            //saveFileDialog.DefaultExt = "jpg";
+            saveFileDialog.Title = "QR Kodu Kaydet";
+
+            if (textBox1.Text == "")
             {
-                SaveFileDialog kaydet = new SaveFileDialog();
-                kaydet.Filter = "JPEG Dosyası|*.jpg | PNG Dosyası | *.png";
-                kaydet.Title = "QR Kodu Farklı Kaydet";
-                kaydet.OverwritePrompt = true;
-                kaydet.CreatePrompt = true;
-                kaydet.ShowDialog();
-
-                if (kaydet.ShowDialog() == DialogResult.OK)
+                MessageBox.Show("QR kodu kaydedilemedi! Lütfen boş bırakmayınız.", "HATA", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                textBox1.Focus();
+            }
+            else
+            {
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    textBox1.Text = saveFileDialog1.FileName;
+                    string dosyaYolu = saveFileDialog.FileName;
+                    picture.Image.Save(dosyaYolu);
+                    label1.Visible = true;
+                    label1.Text = "QR Kodu seçilen dosya yoluna başarıyla kaydedildi!\n" + dosyaYolu;
                 }
             }
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             textBox1.Focus();
+        }
+
+        private void textBox1_Enter(object sender, EventArgs e)
+        {
             textBox1.BackColor = Color.Bisque;
+
+        }
+
+        private void textBox1_Leave(object sender, EventArgs e)
+        {
+            textBox1.BackColor = Color.White;
+
         }
     }
 }
